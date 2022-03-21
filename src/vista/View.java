@@ -1,4 +1,7 @@
+package vista;
+
 import lib.sRAD_java.gui.component.Resource;
+import modelo.Trama;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,16 +11,7 @@ public class View extends JFrame {
     private final Color bgColor = new Color(248, 248, 248);
 
     // transmisor components
-    private JTextField tfIndicadorTransmisor;
-    private JTextField tfACKTransmisor;
-    private JTextField tfENQTransmisor;
-    private JTextField tfCTRTransmisor;
-    private JTextField tfDATTransmisor;
-    private JTextField tfPPTTransmisor;
-    private JTextField tfLPTTransmisor;
-    private JTextField tfNUMTransmisor;
-    private JTextField tfInformacionTransmisor;
-    private JTextField tfIndicador1Transmisor;
+    private PTransmisor pTransmisor;
 
     // receptor components
     private JTextField tfMensajeRecibido;
@@ -48,7 +42,9 @@ public class View extends JFrame {
      * Crea la ventana principal
      */
     public void initComponents() {
-        initTransmisorComponents();
+        pTransmisor = new PTransmisor(this);
+        add(pTransmisor);
+
         initReceptorComponents();
         initSecuenciaDeTramasComponents();
     }
@@ -64,204 +60,9 @@ public class View extends JFrame {
         setVisible(true);
     }
 
-    private void initTransmisorComponents() {
-        JPanel container = new JPanel();
-        container.setBounds(32, 32, 920, 240);
-        container.setLayout(null);
-        container.setBorder(Resource.grayBorder);
-        add(container);
-
-        JLabel lTransmisor = new JLabel("TRANSMISOR");
-        lTransmisor.setFont(Resource.fontTitleMini);
-        lTransmisor.setBounds(46, 26, 100, 30);
-        container.add(lTransmisor);
-
-        JLabel lTransmitir = new JLabel("MENSAJE A TRANSMITIR:");
-        lTransmitir.setFont(Resource.fontText);
-        lTransmitir.setBounds(48, 56, 150, 30);
-        container.add(lTransmitir);
-
-        JTextField tfMensaje = new JTextField();
-        tfMensaje.setFont(Resource.fontTextBold);
-        tfMensaje.setBounds(200, 56, 500, 28);
-        container.add(tfMensaje);
-
-        JLabel lNoFrames = new JLabel("Frames:");
-        lNoFrames.setFont(Resource.fontText);
-        lNoFrames.setBounds(710, 56, 50, 30);
-        container.add(lNoFrames);
-
-        JTextField tfNoFrames = new JTextField();
-        tfNoFrames.setFont(Resource.fontTextBold);
-        tfNoFrames.setBounds(762, 56, 28, 28);
-        tfNoFrames.setHorizontalAlignment(JTextField.CENTER);
-        container.add(tfNoFrames);
-
-        JLabel lIndicador = new JLabel("INDICADOR");
-        lIndicador.setFont(Resource.fontTextMini1);
-        lIndicador.setBounds(65, 86, 100, 30);
-        container.add(lIndicador);
-
-        tfIndicadorTransmisor = new JTextField();
-        tfIndicadorTransmisor.setFont(Resource.fontTextBold);
-        tfIndicadorTransmisor.setBounds(49, 110, 90, 28);
-        tfIndicadorTransmisor.setHorizontalAlignment(JTextField.CENTER);
-        container.add(tfIndicadorTransmisor);
-
-        JLabel lACK = new JLabel("ACK");
-        lACK.setFont(Resource.fontTextMini1);
-        lACK.setBounds(153, 86, 48, 30);
-        container.add(lACK);
-
-        tfACKTransmisor = new JTextField("0");
-        tfACKTransmisor.setFont(Resource.fontTextBold);
-        tfACKTransmisor.setBounds(140, 110, 48, 28);
-        tfACKTransmisor.setHorizontalAlignment(JTextField.CENTER);
-        tfACKTransmisor.setEditable(false);
-        container.add(tfACKTransmisor);
-
-        JCheckBox cbACKTransmisor = new JCheckBox();
-        cbACKTransmisor.setBounds(153, 140, 20, 20);
-        cbACKTransmisor.addActionListener(e->{
-            tfACKTransmisor.setText(cbACKTransmisor.isSelected()?"1":"0");
-        });
-        container.add(cbACKTransmisor);
-
-        JLabel lENQ = new JLabel("ENQ");
-        lENQ.setFont(Resource.fontTextMini1);
-        lENQ.setBounds(203, 86, 50, 30);
-        container.add(lENQ);
-
-        tfENQTransmisor = new JTextField("0");
-        tfENQTransmisor.setFont(Resource.fontTextBold);
-        tfENQTransmisor.setBounds(190, 110, 48, 28);
-        tfENQTransmisor.setHorizontalAlignment(JTextField.CENTER);
-        tfENQTransmisor.setEditable(false);
-        container.add(tfENQTransmisor);
-
-        JCheckBox cbENQTransmisor = new JCheckBox();
-        cbENQTransmisor.setBounds(203, 140, 20, 20);
-        cbENQTransmisor.addActionListener(e->{
-            tfENQTransmisor.setText(cbENQTransmisor.isSelected()?"1":"0");
-        });
-        container.add(cbENQTransmisor);
-
-        JLabel lCTR = new JLabel("CTR");
-        lCTR.setFont(Resource.fontTextMini1);
-        lCTR.setBounds(254, 86, 50, 30);
-        container.add(lCTR);
-
-        tfCTRTransmisor = new JTextField("0");
-        tfCTRTransmisor.setFont(Resource.fontTextBold);
-        tfCTRTransmisor.setBounds(240, 110, 48, 28);
-        tfCTRTransmisor.setHorizontalAlignment(JTextField.CENTER);
-        tfCTRTransmisor.setEditable(false);
-        container.add(tfCTRTransmisor);
-
-        JCheckBox cbCTRTransmisor = new JCheckBox();
-        cbCTRTransmisor.setBounds(253, 140, 20, 20);
-        cbCTRTransmisor.addActionListener(e->{
-            tfCTRTransmisor.setText(cbCTRTransmisor.isSelected()?"1":"0");
-        });
-        container.add(cbCTRTransmisor);
-
-        JLabel lDAT = new JLabel("DAT");
-        lDAT.setFont(Resource.fontTextMini1);
-        lDAT.setBounds(304, 86, 50, 30);
-        container.add(lDAT);
-
-        tfDATTransmisor = new JTextField("0");
-        tfDATTransmisor.setFont(Resource.fontTextBold);
-        tfDATTransmisor.setBounds(290, 110, 48, 28);
-        tfDATTransmisor.setHorizontalAlignment(JTextField.CENTER);
-        tfDATTransmisor.setEditable(false);
-        container.add(tfDATTransmisor);
-
-        JCheckBox cbDAT = new JCheckBox();
-        cbDAT.setBounds(303, 140, 20, 20);
-        cbDAT.addActionListener(e->tfDATTransmisor.setText(cbDAT.isSelected()?"1":"0"));
-        container.add(cbDAT);
-
-        JLabel lPPT = new JLabel("PPT");
-        lPPT.setFont(Resource.fontTextMini1);
-        lPPT.setBounds(354, 86, 50, 30);
-        container.add(lPPT);
-
-        tfPPTTransmisor = new JTextField("0");
-        tfPPTTransmisor.setFont(Resource.fontTextBold);
-        tfPPTTransmisor.setBounds(340, 110, 48, 28);
-        tfPPTTransmisor.setHorizontalAlignment(JTextField.CENTER);
-        tfPPTTransmisor.setEditable(false);
-        container.add(tfPPTTransmisor);
-
-        JCheckBox cbPPT = new JCheckBox();
-        cbPPT.setBounds(353, 140, 20, 20);
-        cbPPT.addActionListener(e->tfPPTTransmisor.setText(cbPPT.isSelected()?"1":"0"));
-        container.add(cbPPT);
-
-        JLabel lLPT = new JLabel("LPT");
-        lLPT.setFont(Resource.fontTextMini1);
-        lLPT.setBounds(404, 86, 50, 30);
-        container.add(lLPT);
-
-        tfLPTTransmisor = new JTextField("0");
-        tfLPTTransmisor.setFont(Resource.fontTextBold);
-        tfLPTTransmisor.setBounds(390, 110, 48, 28);
-        tfLPTTransmisor.setHorizontalAlignment(JTextField.CENTER);
-        tfLPTTransmisor.setEditable(false);
-        container.add(tfLPTTransmisor);
-
-        JCheckBox cbLPT = new JCheckBox();
-        cbLPT.setBounds(403, 140, 20, 20);
-        cbLPT.addActionListener(e->tfLPTTransmisor.setText(cbLPT.isSelected()?"1":"0"));
-        container.add(cbLPT);
-
-        JLabel lNUM = new JLabel("NUM");
-        lNUM.setFont(Resource.fontTextMini1);
-        lNUM.setBounds(452, 86, 40, 30);
-        container.add(lNUM);
-
-        tfNUMTransmisor = new JTextField();
-        tfNUMTransmisor.setFont(Resource.fontTextBold);
-        tfNUMTransmisor.setBounds(440, 110, 48, 28);
-        tfNUMTransmisor.setHorizontalAlignment(JTextField.CENTER);
-        container.add(tfNUMTransmisor);
-
-        JLabel lInformacion = new JLabel("INFORMACIÓN");
-        lInformacion.setFont(Resource.fontTextMini1);
-        lInformacion.setBounds(555, 86, 100, 30);
-        container.add(lInformacion);
-
-        tfInformacionTransmisor = new JTextField();
-        tfInformacionTransmisor.setFont(Resource.fontTextBold);
-        tfInformacionTransmisor.setBounds(490, 110, 200, 28);
-        tfInformacionTransmisor.setHorizontalAlignment(JTextField.CENTER);
-        container.add(tfInformacionTransmisor);
-
-        JLabel lIndicador1 = new JLabel("INDICADOR");
-        lIndicador1.setFont(Resource.fontTextMini1);
-        lIndicador1.setBounds(713, 86, 100, 30);
-        container.add(lIndicador1);
-
-        tfIndicador1Transmisor = new JTextField();
-        tfIndicador1Transmisor.setFont(Resource.fontTextBold);
-        tfIndicador1Transmisor.setBounds(692, 110, 100, 28);
-        tfIndicador1Transmisor.setHorizontalAlignment(JTextField.CENTER);
-        container.add(tfIndicador1Transmisor);
-
-        JButton btEnviar = new JButton("ENVIAR");
-        btEnviar.setBounds(794, 110, 100, 28);
-        container.add(btEnviar);
-
-        JLabel lSemantica = new JLabel("SEMÁNTICA: TRAMA DE DATOS");
-        lSemantica.setFont(Resource.fontText);
-        lSemantica.setBounds(200, 165, 200, 30);
-        container.add(lSemantica);
-    }
-
     private void initReceptorComponents() {
         JPanel container = new JPanel();
-        container.setBounds(32, 302, 920, 342);
+        container.setBounds(32, 292, 920, 352);
         container.setLayout(null);
         container.setBorder(Resource.grayBorder);
         add(container);
@@ -472,4 +273,7 @@ public class View extends JFrame {
         container.add(scrollPane);
     }
 
+    public void enviar(Trama trama) {
+
+    }
 }
