@@ -1,15 +1,14 @@
-package vista;
+package app;
 
-import modelo.Sistema;
-import modelo.Trama;
+import app.modelo.Trama;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-public class PTransmisor extends JPanel {
+public class Transmisor extends JPanel {
     // referencia de la ventana principal
-    private View view;
+    private Sistema sistema;
 
     // componentes
     private JLabel lSemantica;
@@ -26,8 +25,8 @@ public class PTransmisor extends JPanel {
     private JTextField tfInformacion;
     private JTextField tfIndicadorFinal;
 
-    public PTransmisor(View view) {
-        this.view = view;
+    public Transmisor(Sistema sistema) {
+        this.sistema = sistema;
 
         setProperties();
         initLabels();
@@ -52,7 +51,11 @@ public class PTransmisor extends JPanel {
         Trama trama = new Trama(tfIndicadorInicial.getText(), tfACK.getText(), tfENQ.getText(), tfCTR.getText(), tfDAT.getText(),
                 tfPPT.getText(), tfLPR.getText(), tfNUM.getText(), tfInformacion.getText(), tfIndicadorFinal.getText());
         if(Sistema.validarTrama(trama)) {
-            view.enviar(trama);
+            sistema.enviar(trama, "Tx");
+        }
+        else {
+            JOptionPane.showMessageDialog(null, "No se pudo enviar trama: trama inválida.", "ERROR",
+                    JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -135,7 +138,7 @@ public class PTransmisor extends JPanel {
     }
 
     private void initTextFields() {
-        tfIndicadorInicial = new JTextField();
+        tfIndicadorInicial = new JTextField("10000001");
         tfIndicadorInicial.setFont(lib.sRAD_java.gui.component.Resource.fontTextBold);
         tfIndicadorInicial.setBounds(49, 110, 90, 28);
         tfIndicadorInicial.setHorizontalAlignment(JTextField.CENTER);
@@ -206,7 +209,7 @@ public class PTransmisor extends JPanel {
         tfInformacion.setHorizontalAlignment(JTextField.CENTER);
         add(tfInformacion);
 
-        tfIndicadorFinal = new JTextField();
+        tfIndicadorFinal = new JTextField("10000001");
         tfIndicadorFinal.setFont(lib.sRAD_java.gui.component.Resource.fontTextBold);
         tfIndicadorFinal.setBounds(692, 110, 100, 28);
         tfIndicadorFinal.setHorizontalAlignment(JTextField.CENTER);

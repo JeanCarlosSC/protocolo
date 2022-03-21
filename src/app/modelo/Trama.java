@@ -1,4 +1,4 @@
-package modelo;
+package app.modelo;
 
 public class Trama {
     private String indicadorInicial;
@@ -64,5 +64,29 @@ public class Trama {
 
     public String getIndicadorFinal() {
         return indicadorFinal;
+    }
+
+    public void setAck(String ack) {
+        this.ack = ack;
+    }
+
+    public void setEnq(String enq) {
+        this.enq = enq;
+    }
+
+    public void setCtr(String ctr) {
+        this.ctr = ctr;
+    }
+
+    public void setDat(String dat) {
+        this.dat = dat;
+    }
+
+    public void setPpt(String ppt) {
+        this.ppt = ppt;
+    }
+
+    public void setLpr(String lpr) {
+        this.lpr = lpr;
     }
 }

@@ -1,7 +1,7 @@
-import vista.View;
+import app.Sistema;
 
 public class Launcher {
     public static void main(String[] args) {
-        new View();
+        new Sistema();
     }
 }
