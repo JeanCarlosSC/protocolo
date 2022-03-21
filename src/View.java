@@ -81,6 +81,22 @@ public class View extends JFrame {
         lTransmitir.setBounds(48, 56, 150, 30);
         container.add(lTransmitir);
 
+        JTextField tfMensaje = new JTextField();
+        tfMensaje.setFont(Resource.fontTextBold);
+        tfMensaje.setBounds(200, 56, 500, 28);
+        container.add(tfMensaje);
+
+        JLabel lNoFrames = new JLabel("Frames:");
+        lNoFrames.setFont(Resource.fontText);
+        lNoFrames.setBounds(710, 56, 50, 30);
+        container.add(lNoFrames);
+
+        JTextField tfNoFrames = new JTextField();
+        tfNoFrames.setFont(Resource.fontTextBold);
+        tfNoFrames.setBounds(762, 56, 28, 28);
+        tfNoFrames.setHorizontalAlignment(JTextField.CENTER);
+        container.add(tfNoFrames);
+
         JLabel lIndicador = new JLabel("INDICADOR");
         lIndicador.setFont(Resource.fontTextMini1);
         lIndicador.setBounds(65, 86, 100, 30);
@@ -448,6 +464,7 @@ public class View extends JFrame {
         add(container);
 
         taSecuenciaDeTramas = new JTextArea();
+        taSecuenciaDeTramas.setEditable(false);
 
         JScrollPane scrollPane = new JScrollPane(taSecuenciaDeTramas);
         scrollPane.setBounds(16, 16, 230-32, 568-32);
