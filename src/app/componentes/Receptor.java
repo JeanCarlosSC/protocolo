@@ -9,25 +9,6 @@ public class Receptor extends JPanel {
     // referencia
     private final Sistema sistema;
 
-    // componentes
-    private JLabel lSemantica;
-    private JTextField tfMensajeRecibido;
-    private JTextField tfIndicadorInicial;
-    private JTextField tfACK;
-    private JTextField tfENQ;
-    private JTextField tfCTR;
-    private JTextField tfDAT;
-    private JTextField tfPPT;
-    private JTextField tfLPR;
-    private JTextField tfNUM;
-    private JTextField tfInformacion;
-    private JTextField tfInformacion1;
-    private JTextField tfIndicadorFinal;
-    private JTextField tfHeader;
-    private JTextField tfHeader1;
-    private JTextField tfTrailer;
-    private final JButton btResponder;
-
     // datos
     private boolean recibiendo;
 
@@ -109,6 +90,48 @@ public class Receptor extends JPanel {
                     JOptionPane.ERROR_MESSAGE);
         }
     }
+
+    private void updateGUI(Trama trama) {
+        // text fields
+        tfIndicadorInicial.setText(trama.getIndicadorInicial());
+        tfACK.setText(trama.getAck());
+        tfENQ.setText(trama.getEnq());
+        tfCTR.setText(trama.getCtr());
+        tfDAT.setText(trama.getDat());
+        tfPPT.setText(trama.getPpt());
+        tfLPR.setText(trama.getLpr());
+        tfNUM.setText(trama.getNum());
+        tfInformacion1.setText(trama.getInformacion());
+        tfIndicadorFinal.setText(trama.getIndicadorFinal());
+
+        // semántica
+        lSemantica.setText(Sistema.obtenerSemantica(trama)+", TRAMA RECIBIDA CON ÉXITO");
+    }
+
+    public boolean estaRecibiendo() {
+        return recibiendo;
+    }
+
+    // - - - - - iniciar gui - - - - -
+
+    // componentes
+    private JLabel lSemantica;
+    private JTextField tfMensajeRecibido;
+    private JTextField tfIndicadorInicial;
+    private JTextField tfACK;
+    private JTextField tfENQ;
+    private JTextField tfCTR;
+    private JTextField tfDAT;
+    private JTextField tfPPT;
+    private JTextField tfLPR;
+    private JTextField tfNUM;
+    private JTextField tfInformacion;
+    private JTextField tfInformacion1;
+    private JTextField tfIndicadorFinal;
+    private JTextField tfHeader;
+    private JTextField tfHeader1;
+    private JTextField tfTrailer;
+    private final JButton btResponder;
 
     private void setProperties() {
         setBounds(32, 292, 920, 352);
@@ -299,24 +322,4 @@ public class Receptor extends JPanel {
         add(tfMensajeRecibido);
     }
 
-    private void updateGUI(Trama trama) {
-        // text fields
-        tfIndicadorInicial.setText(trama.getIndicadorInicial());
-        tfACK.setText(trama.getAck());
-        tfENQ.setText(trama.getEnq());
-        tfCTR.setText(trama.getCtr());
-        tfDAT.setText(trama.getDat());
-        tfPPT.setText(trama.getPpt());
-        tfLPR.setText(trama.getLpr());
-        tfNUM.setText(trama.getNum());
-        tfInformacion1.setText(trama.getInformacion());
-        tfIndicadorFinal.setText(trama.getIndicadorFinal());
-
-        // semántica
-        lSemantica.setText(Sistema.obtenerSemantica(trama)+", TRAMA RECIBIDA CON ÉXITO");
-    }
-
-    public boolean estaRecibiendo() {
-        return recibiendo;
-    }
 }

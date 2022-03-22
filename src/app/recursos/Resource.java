@@ -9,9 +9,8 @@ public class Resource {
 //----------------------------------------COLOUR PALETTES---------------------------------------------------------------
     //basic
     public final static Color WHITE = new Color(255, 255, 255);
-    public final static Color bgColor = new Color(248, 248, 248);
+    public final static Color lightGray = new Color(248, 248, 248);
 
-//--------------------------------------COLOR THEMES--------------------------------------------------------------------
     //Dark Theme based on Intellij Idea
     public final static Color DTII7 = new Color(124, 123, 119); //comment font
 
@@ -24,7 +23,7 @@ public class Resource {
     public final static Font fontTextMini1 = new Font("Arial", Font.PLAIN, 10);
 
 
-//----------------------------------------BORDER (B)----------------------------------------------------------------
+//-----------------------------------------BORDER-----------------------------------------------------------------------
     //Dark Theme based on Intellij Idea
     public final static Border grayBorder = BorderFactory.createLineBorder(DTII7, 2, false);
 

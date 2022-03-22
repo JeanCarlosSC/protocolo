@@ -11,26 +11,6 @@ public class Transmisor extends JPanel {
     // referencia de la ventana principal
     private final Sistema sistema;
 
-    // componentes
-    private JLabel lSemantica;
-    private JTextField tfMensaje;
-    private JTextField tfNoFrames;
-    private JTextField tfIndicadorInicial;
-    private JTextField tfACK;
-    private JTextField tfENQ;
-    private JTextField tfCTR;
-    private JTextField tfDAT;
-    private JTextField tfPPT;
-    private JTextField tfLPR;
-    private JTextField tfNUM;
-    private JTextField tfInformacion;
-    private JTextField tfIndicadorFinal;
-    private JCheckBox cbPPT;
-    private JCheckBox cbCTR;
-    private JCheckBox cbENQ;
-    private JCheckBox cbDAT;
-    private final JButton btEnviar;
-
     public Transmisor(Sistema sistema) {
         this.sistema = sistema;
 
@@ -69,6 +49,67 @@ public class Transmisor extends JPanel {
                     JOptionPane.ERROR_MESSAGE);
         }
     }
+
+    public int getNoFrames() {
+        try {
+            return Integer.parseInt(tfNoFrames.getText()); // modo automático
+        }
+        catch (Exception e) {
+            return -1; // modo manual
+        }
+    }
+
+    public String getMensajeATransmitir() {
+        return tfMensaje.getText();
+    }
+
+    public void establecerProximaTrama(Trama trama) {
+        int posicion = Integer.parseInt(trama.getNum());
+
+        // first trama
+        if (cbPPT.isSelected()) {
+            cbPPT.setSelected(false);
+            tfPPT.setText("0");
+            cbCTR.setSelected(false);
+            tfCTR.setText("0");
+            cbDAT.setSelected(true);
+            tfDAT.setText("1");
+        }
+
+        // last trama
+        if(posicion-1 == sistema.getLastPosicion()) {
+            cbENQ.setSelected(true);
+            tfENQ.setText("1");
+        }
+
+        // cualquier trama
+        if(posicion-1 <= sistema.getLastPosicion()) {
+            tfNUM.setText(posicion+"");
+            tfInformacion.setText(sistema.getFrameAt(posicion-1));
+        }
+    }
+
+    // - - - - - iniciar gui - - - - -
+
+    // componentes
+    private JLabel lSemantica;
+    private JTextField tfMensaje;
+    private JTextField tfNoFrames;
+    private JTextField tfIndicadorInicial;
+    private JTextField tfACK;
+    private JTextField tfENQ;
+    private JTextField tfCTR;
+    private JTextField tfDAT;
+    private JTextField tfPPT;
+    private JTextField tfLPR;
+    private JTextField tfNUM;
+    private JTextField tfInformacion;
+    private JTextField tfIndicadorFinal;
+    private JCheckBox cbPPT;
+    private JCheckBox cbCTR;
+    private JCheckBox cbENQ;
+    private JCheckBox cbDAT;
+    private final JButton btEnviar;
 
     private void setProperties() {
         setBounds(32, 32, 920, 230);
@@ -288,38 +329,4 @@ public class Transmisor extends JPanel {
         add(cbLPT);
     }
 
-    public int getNoFrames() {
-        return Integer.parseInt(tfNoFrames.getText());
-    }
-
-    public String getMensajeATransmitir() {
-        return tfMensaje.getText();
-    }
-
-    public void establecerProximaTrama(Trama trama) {
-        int posicion = Integer.parseInt(trama.getNum());
-
-        // first trama
-        if (cbPPT.isSelected()) {
-            cbPPT.setSelected(false);
-            tfPPT.setText("0");
-            cbCTR.setSelected(false);
-            tfCTR.setText("0");
-            cbDAT.setSelected(true);
-            tfDAT.setText("1");
-        }
-
-        // last trama
-        if(posicion-1 == sistema.getLastPosicion()) {
-            cbENQ.setSelected(true);
-            tfENQ.setText("1");
-        }
-
-        // cualquier trama
-        if(posicion-1 <= sistema.getLastPosicion()) {
-            tfNUM.setText(posicion+"");
-            tfInformacion.setText(sistema.getFrameAt(posicion-1));
-        }
-
-    }
 }

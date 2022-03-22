@@ -4,9 +4,10 @@ import app.recursos.Resource;
 
 import javax.swing.*;
 
-import static app.recursos.Resource.bgColor;
+import static app.recursos.Resource.lightGray;
 
 public class Ventana extends JFrame {
+
     // componentes
     private JTextArea taSecuenciaDeTramas; // secuencia de tramas
 
@@ -16,14 +17,22 @@ public class Ventana extends JFrame {
     }
 
     /**
+     * Imprime un mensaje en la secuencia de tramas
+     * @param message mensaje para imprimir en la secuencia de tramas
+     */
+    public void printMessageLine(String message) {
+        taSecuenciaDeTramas.append(message+"\n");
+    }
+
+    /**
      * Crea la ventana principal
      */
-    public void initComponents() {
+    private void initComponents() {
         initSecuenciaDeTramasComponents();
     }
 
     private void setProperties() {
-        getContentPane().setBackground(bgColor);
+        getContentPane().setBackground(lightGray);
         setTitle("Protocolo de transmisión de datos");
         setResizable(false);
         setLayout(null);
@@ -56,7 +65,4 @@ public class Ventana extends JFrame {
         container.add(scrollPane);
     }
 
-    public void printMessageLine(String message) {
-        taSecuenciaDeTramas.append(message+"\n");
-    }
 }

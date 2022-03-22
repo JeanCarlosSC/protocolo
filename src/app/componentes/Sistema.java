@@ -80,7 +80,7 @@ public class Sistema {
         // validación de ACK
         if(trama.getAck().equals("1") && !receptor.estaRecibiendo()) {
             JOptionPane.showMessageDialog(null, "No es posible enviar un ACK porque no se ha iniciado la" +
-                    "transmisión.", "ERROR", JOptionPane.ERROR_MESSAGE);
+                    " transmisión.", "ERROR", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
@@ -152,6 +152,17 @@ public class Sistema {
         }
     }
 
+    public int getLastPosicion() {
+        if(frames == null) {
+            return -1;
+        }
+        return frames.size()-1;
+    }
+
+    public String getFrameAt(int posicion) {
+        return frames.get(posicion);
+    }
+
     private void initComponents() {
         ventana = new Ventana();
 
@@ -174,14 +185,4 @@ public class Sistema {
                 "ERROR", JOptionPane.ERROR_MESSAGE);
     }
 
-    public int getLastPosicion() {
-        if(frames == null) {
-            return -1;
-        }
-        return frames.size()-1;
-    }
-
-    public String getFrameAt(int posicion) {
-        return frames.get(posicion);
-    }
 }
