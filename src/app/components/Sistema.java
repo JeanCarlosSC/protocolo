@@ -1,10 +1,15 @@
-package app;
+package app.components;
 
+import app.components.Receptor;
+import app.components.Transmisor;
+import app.components.Ventana;
 import app.modelo.Trama;
 
 import javax.swing.*;
+import java.util.ArrayList;
 
 public class Sistema {
+    // contadores
     private static int nextSecuenciaID = 1;
     private static int nextTramaID = 0;
 
@@ -13,8 +18,12 @@ public class Sistema {
     private Transmisor transmisor;
     private Receptor receptor;
 
+    // frames
+    private ArrayList<String> frames;
+
     public Sistema() {
         initComponents();
+        frames = null;
     }
 
     public static String obtenerSemantica (Trama trama) {
@@ -59,6 +68,18 @@ public class Sistema {
     }
 
     public void enviar(Trama trama, String origen) {
+        // inicializa los frames si aún no se han inicializado
+        if(frames == null) {
+            frames = new ArrayList<>();
+            int size = transmisor.getMensajeATransmitir().length()/transmisor.getNoFrames();
+            int module = transmisor.getMensajeATransmitir().length()%transmisor.getNoFrames();
+            for (int i=0; i<transmisor.getNoFrames(); i++) {
+                int start = i*size;
+                int end = (i+1)*size+ (i==transmisor.getNoFrames()-1?module:0);
+                frames.add(transmisor.getMensajeATransmitir().substring(start, end));
+            }
+        }
+
         // validación de ACK
         if(trama.getAck().equals("1") && !receptor.estaRecibiendo()) {
             JOptionPane.showMessageDialog(null, "No es posible enviar un ACK porque no se ha iniciado la" +
@@ -88,6 +109,7 @@ public class Sistema {
                     return;
                 } else {
                     ventana.printMessageLine("Trama " + getID() + ": (" + origen + ") Control, listo para recibir.");
+                    transmisor.establecerProximaTrama(trama);
                 }
                 break;
             case "SEMÁNTICA: TRAMA DE DATOS":
@@ -117,6 +139,7 @@ public class Sistema {
                     return;
                 } else {
                     ventana.printMessageLine("Trama " + getID() + ": (" + origen + ") Control, Trama " + (nextTramaID - 1) + ".");
+                    transmisor.establecerProximaTrama(trama);
                 }
                 break;
             case "SEMÁNTICA: ÚLTIMA TRAMA DE CONTROL":
@@ -152,5 +175,13 @@ public class Sistema {
         String responsable = origen.equals("Tx")?"Transmisor":"Receptor";
         JOptionPane.showMessageDialog(null, "Esta trama no puede ser enviada por el "+responsable,
                 "ERROR", JOptionPane.ERROR_MESSAGE);
+    }
+
+    public int getLastPosicion() {
+        return frames.size()-1;
+    }
+
+    public String getFrameAt(int posicion) {
+        return frames.get(posicion);
     }
 }

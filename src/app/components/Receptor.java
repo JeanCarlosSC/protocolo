@@ -1,4 +1,4 @@
-package app;
+package app.components;
 
 import app.modelo.Trama;
 import app.recursos.Resource;
@@ -73,7 +73,7 @@ public class Receptor extends JPanel {
                 trama.setAck("1");
                 trama.setCtr("1");
                 trama.setDat("0");
-                tfMensajeRecibido.setText(tfMensajeRecibido.getText()+" "+trama.getInformacion());
+                tfMensajeRecibido.setText(tfMensajeRecibido.getText()+trama.getInformacion());
             }
             else {
                 JOptionPane.showMessageDialog(null, "El receptor aún no ha concedido permisos para recibir" +

@@ -1,4 +1,4 @@
-package app;
+package app.components;
 
 import app.modelo.Trama;
 import app.recursos.Resource;
@@ -25,6 +25,10 @@ public class Transmisor extends JPanel {
     private JTextField tfNUM;
     private JTextField tfInformacion;
     private JTextField tfIndicadorFinal;
+    private JCheckBox cbPPT;
+    private JCheckBox cbCTR;
+    private JCheckBox cbENQ;
+    private JCheckBox cbDAT;
     private final JButton btEnviar;
 
     public Transmisor(Sistema sistema) {
@@ -243,7 +247,7 @@ public class Transmisor extends JPanel {
         });
         add(cbACK);
 
-        JCheckBox cbENQ = new JCheckBox();
+        cbENQ = new JCheckBox();
         cbENQ.setBounds(203, 140, 20, 20);
         cbENQ.addActionListener(e->{
             tfENQ.setText(cbENQ.isSelected()?"1":"0");
@@ -251,7 +255,7 @@ public class Transmisor extends JPanel {
         });
         add(cbENQ);
 
-        JCheckBox cbCTR = new JCheckBox();
+        cbCTR = new JCheckBox();
         cbCTR.setBounds(253, 140, 20, 20);
         cbCTR.addActionListener(e->{
             tfCTR.setText(cbCTR.isSelected()?"1":"0");
@@ -259,7 +263,7 @@ public class Transmisor extends JPanel {
         });
         add(cbCTR);
 
-        JCheckBox cbDAT = new JCheckBox();
+        cbDAT = new JCheckBox();
         cbDAT.setBounds(303, 140, 20, 20);
         cbDAT.addActionListener(e-> {
             tfDAT.setText(cbDAT.isSelected() ? "1" : "0");
@@ -267,7 +271,7 @@ public class Transmisor extends JPanel {
         });
         add(cbDAT);
 
-        JCheckBox cbPPT = new JCheckBox();
+        cbPPT = new JCheckBox();
         cbPPT.setBounds(353, 140, 20, 20);
         cbPPT.addActionListener(e-> {
             tfPPT.setText(cbPPT.isSelected() ? "1" : "0");
@@ -284,4 +288,36 @@ public class Transmisor extends JPanel {
         add(cbLPT);
     }
 
+    public int getNoFrames() {
+        return Integer.parseInt(tfNoFrames.getText());
+    }
+
+    public String getMensajeATransmitir() {
+        return tfMensaje.getText();
+    }
+
+    public void establecerProximaTrama(Trama trama) {
+        int posicion = Integer.parseInt(trama.getNum());
+
+        // first trama
+        if (cbPPT.isSelected()) {
+            cbPPT.setSelected(false);
+            tfPPT.setText("0");
+            cbCTR.setSelected(false);
+            tfCTR.setText("0");
+            cbDAT.setSelected(true);
+            tfDAT.setText("1");
+        }
+
+        // last trama
+        if(posicion-1 == sistema.getLastPosicion()) {
+            cbENQ.setSelected(true);
+            tfENQ.setText("1");
+        }
+
+        // cualquier trama
+        tfNUM.setText(posicion+"");
+        tfInformacion.setText(sistema.getFrameAt(posicion-1));
+
+    }
 }
