@@ -1,4 +1,4 @@
-package app.components;
+package app.componentes;
 
 import app.modelo.Trama;
 import app.recursos.Resource;
@@ -59,7 +59,7 @@ public class Receptor extends JPanel {
                 trama.setAck("1");
                 trama.setCtr("1");
                 trama.setDat("0");
-                tfMensajeRecibido.setText(tfMensajeRecibido.getText()+" "+trama.getInformacion());
+                tfMensajeRecibido.setText(tfMensajeRecibido.getText()+trama.getInformacion());
             }
             else {
                 JOptionPane.showMessageDialog(null, "El receptor aún no ha concedido permisos para recibir" +
@@ -101,6 +101,8 @@ public class Receptor extends JPanel {
                 tfPPT.getText(), tfLPR.getText(), tfNUM.getText(), tfInformacion.getText(), tfIndicadorFinal.getText());
         if(Sistema.validarTrama(trama, "Rx")) {
             sistema.enviar(trama, "Rx");
+            tfHeader.setText("");
+            tfTrailer.setText("");
         }
         else {
             JOptionPane.showMessageDialog(null, "No se pudo enviar trama: trama inválida.", "ERROR",

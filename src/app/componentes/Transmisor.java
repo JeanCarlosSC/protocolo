@@ -1,4 +1,4 @@
-package app.components;
+package app.componentes;
 
 import app.modelo.Trama;
 import app.recursos.Resource;

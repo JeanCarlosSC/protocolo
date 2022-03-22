@@ -1,8 +1,5 @@
-package app.components;
+package app.componentes;
 
-import app.components.Receptor;
-import app.components.Transmisor;
-import app.components.Ventana;
 import app.modelo.Trama;
 
 import javax.swing.*;

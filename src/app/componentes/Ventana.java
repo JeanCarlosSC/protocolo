@@ -1,4 +1,4 @@
-package app.components;
+package app.componentes;
 
 import app.recursos.Resource;
 
