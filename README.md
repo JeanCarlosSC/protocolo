@@ -10,7 +10,7 @@
 - Los valores de **respuesta** se colocan automáticamente al recibir una trama, no es necesario modificarlo. (podría cambiar el mensaje que le envía al sistema).
 - El **mensaje a transmitir** y **Frames** se escriben antes de presionar el botón **enviar** por primera vez, no deben estar vacíos, escribir datos válidos.
 - Para que funcione automáticamente sin problemas, no editar tramas (se pueden modificar las tramas, aunque podría generar alguna excepción causada por interrumpir el flujo automático).
-- Para evitar las excepciones por interrupción del flujo automático, no llenar el campo de **mensaje a transmitir** desde el inicio de la ejecución. (de esta forma se puede continuar de forma manual durante toda la ejecución naturalmente e indefinidamente).
+- Para evitar las excepciones por interrupción del flujo automático, no llenar el campo de **mensaje a transmitir** desde el inicio de la ejecución. (de esta forma se puede continuar de forma manual durante toda la ejecución).
 
 ## Más información acerca del proyecto
 
