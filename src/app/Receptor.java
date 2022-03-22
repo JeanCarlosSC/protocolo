@@ -25,46 +25,80 @@ public class Receptor extends JPanel {
     private JTextField tfHeader;
     private JTextField tfHeader1;
     private JTextField tfTrailer;
+    private JButton btResponder;
 
     // datos
-    private boolean estaRecibiendo;
+    private boolean recibiendo;
 
     public Receptor(Sistema sistema) {
         this.sistema = sistema;
-        estaRecibiendo = false;
+        recibiendo = false;
 
         setProperties();
         initLabels();
         initTextFields();
 
-        JButton btResponder = new JButton("RESPONDER");
+        btResponder = new JButton("RESPONDER");
         btResponder.setBounds(794, 205, 105, 28);
         btResponder.addActionListener(e->responder());
         add(btResponder);
     }
 
     public void recibir(Trama trama) {
-        // trama recibida
-        tfHeader.setText(trama.getIndicadorInicial());
         tfHeader1.setText(trama.getAck()+trama.getEnq()+trama.getCtr()+trama.getDat()+trama.getPpt()+trama.getLpr()+trama.getNum());
-        tfInformacion.setText(trama.getInformacion());
-        tfTrailer.setText(trama.getIndicadorFinal());
 
-        // procesar trama y calcular respuesta
+        // procesar trama -> calcular respuesta
         if(Sistema.obtenerSemantica(trama).equals("SEMÁNTICA: TRAMA DE CONTROL, PERMISO PARA TRANSMITIR")) {
-            estaRecibiendo = true;
+            recibiendo = true;
             trama.setLpr("1");
             trama.setPpt("0");
-        }// solicita permiso para transmitir -> otorga permiso para recibir
+        } // solicita permiso para transmitir -> otorga permiso para recibir
+        else if(Sistema.obtenerSemantica(trama).equals("SEMÁNTICA: TRAMA DE DATOS")) {
+            if(recibiendo) {
+                trama.setAck("1");
+                trama.setCtr("1");
+                trama.setDat("0");
+                tfMensajeRecibido.setText(tfMensajeRecibido.getText()+" "+trama.getInformacion());
+            }
+            else {
+                JOptionPane.showMessageDialog(null, "El receptor aún no ha concedido permisos para recibir" +
+                        " datos", "ERROR", JOptionPane.ERROR_MESSAGE);
+                tfHeader1.setText("");
+                return;
+            }
+        } // recibe datos -> control de trama correspondiente
+        else if(Sistema.obtenerSemantica(trama).equals("SEMÁNTICA: ÚLTIMA TRAMA DE DATOS")) {
+            if(recibiendo) {
+                trama.setAck("1");
+                trama.setCtr("1");
+                trama.setDat("0");
+                tfMensajeRecibido.setText(tfMensajeRecibido.getText()+" "+trama.getInformacion());
+            }
+            else {
+                JOptionPane.showMessageDialog(null, "El receptor aún no ha concedido permisos para recibir" +
+                        " datos", "ERROR", JOptionPane.ERROR_MESSAGE);
+                tfHeader1.setText("");
+                return;
+            }
+        }
 
         // mostrar respuesta
         updateGUI(trama);
+
+        // trama recibida
+        tfHeader.setText(trama.getIndicadorInicial());
+        tfInformacion.setText(trama.getInformacion());
+        tfTrailer.setText(trama.getIndicadorFinal());
+    }
+
+    public void inhabilitar() {
+        btResponder.setEnabled(false);
     }
 
     private void responder() {
         Trama trama = new Trama(tfIndicadorInicial.getText(), tfACK.getText(), tfENQ.getText(), tfCTR.getText(), tfDAT.getText(),
                 tfPPT.getText(), tfLPR.getText(), tfNUM.getText(), tfInformacion.getText(), tfIndicadorFinal.getText());
-        if(Sistema.validarTrama(trama)) {
+        if(Sistema.validarTrama(trama, "Rx")) {
             sistema.enviar(trama, "Rx");
         }
         else {
@@ -145,10 +179,10 @@ public class Receptor extends JPanel {
         lPPT.setBounds(354, 181, 50, 30);
         add(lPPT);
 
-        JLabel lLPT = new JLabel("LPT");
-        lLPT.setFont(lib.sRAD_java.gui.component.Resource.fontTextMini1);
-        lLPT.setBounds(404, 181, 50, 30);
-        add(lLPT);
+        JLabel lLPR = new JLabel("LPR");
+        lLPR.setFont(lib.sRAD_java.gui.component.Resource.fontTextMini1);
+        lLPR.setBounds(404, 181, 50, 30);
+        add(lLPR);
 
         JLabel lNUM = new JLabel("NUM");
         lNUM.setFont(lib.sRAD_java.gui.component.Resource.fontTextMini1);
@@ -274,9 +308,12 @@ public class Receptor extends JPanel {
         tfNUM.setText(trama.getNum());
         tfInformacion1.setText(trama.getInformacion());
         tfIndicadorFinal.setText(trama.getIndicadorFinal());
-        tfMensajeRecibido.setText(tfMensajeRecibido.getText()+" "+trama.getInformacion());
 
         // semántica
         lSemantica.setText(Sistema.obtenerSemantica(trama)+", TRAMA RECIBIDA CON ÉXITO");
+    }
+
+    public boolean estaRecibiendo() {
+        return recibiendo;
     }
 }

@@ -2,8 +2,11 @@ package app;
 
 import app.modelo.Trama;
 
+import javax.swing.*;
+
 public class Sistema {
-    private int nextID = 1;
+    private static int nextSecuenciaID = 1;
+    private static int nextTramaID = 0;
 
     // componentes
     private Ventana ventana;
@@ -20,26 +23,115 @@ public class Sistema {
         if(configuracion.equals("0010100")) {
             return "SEMÁNTICA: TRAMA DE CONTROL, PERMISO PARA TRANSMITIR";
         }
-        else if(configuracion.equals("0010010")) {
+        else if(configuracion.substring(0, 6).equals("001001")) {
             return  "SEMÁNTICA: TRAMA DE CONTROL, LISTO PARA RECIBIR";
+        }
+        else if(configuracion.substring(0, 6).equals("000100")) {
+            return "SEMÁNTICA: TRAMA DE DATOS";
+        }
+        else if(configuracion.substring(0, 6).equals("010100")) {
+            return "SEMÁNTICA: ÚLTIMA TRAMA DE DATOS";
+        }
+        else if(configuracion.substring(0, 6).equals("101000")) {
+            return "SEMÁNTICA: TRAMA DE CONTROL";
+        }
+        else if(configuracion.substring(0, 6).equals("111000")) {
+            return "SEMÁNTICA: ÚLTIMA TRAMA DE CONTROL";
         }
         else {
             return "SEMÁNTICA: TRAMA INVÁLIDA";
         }
     }
 
-    public static boolean validarTrama (Trama trama) {
+    public static boolean validarTrama (Trama trama, String origen) {
+        if (origen.equals("Rx")) {
+            // verifica que el id de la trama recibida + 1 sea igual al id de la próxima trama
+            trama.setNum((Integer.parseInt(trama.getNum())+1)+"");
+        }
+        if(!trama.getNum().equals(nextTramaID + "")) {
+            // retorna modificación
+            if (origen.equals("Rx")) {
+                trama.setNum((Integer.parseInt(trama.getNum())-1)+"");
+            }
+            return false;
+        }
         return !obtenerSemantica(trama).equals("SEMÁNTICA: TRAMA INVÁLIDA");
     }
 
     public void enviar(Trama trama, String origen) {
+        // validación de ACK
+        if(trama.getAck().equals("1") && !receptor.estaRecibiendo()) {
+            JOptionPane.showMessageDialog(null, "No es posible enviar un ACK porque no se ha iniciado la" +
+                    "transmisión.", "ERROR", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // enviar
         String semantica = obtenerSemantica(trama);
+
         if(semantica.equals("SEMÁNTICA: TRAMA DE CONTROL, PERMISO PARA TRANSMITIR")) {
-            ventana.printMessageLine("Trama "+getID()+": ("+origen+") Control, permiso para transmitir.");
-            receptor.recibir(trama);
+            // verifica origen adecuado de la trama
+            if(origen.equals("Rx")) {
+                mostrarOrigenIncorrecto(origen);
+                return;
+            }
+            else {
+                ventana.printMessageLine("Trama "+getID()+": ("+origen+") Control, permiso para transmitir.");
+                receptor.recibir(trama);
+                nextTramaID++;
+            }
         }
         else if(semantica.equals("SEMÁNTICA: TRAMA DE CONTROL, LISTO PARA RECIBIR")) {
-            ventana.printMessageLine("Trama "+getID()+": ("+origen+") Control, listo para recibir.");
+            // verifica origen adecuado de la trama
+            if(origen.equals("Tx")) {
+                mostrarOrigenIncorrecto(origen);
+                return;
+            }
+            else {
+                ventana.printMessageLine("Trama "+getID()+": ("+origen+") Control, listo para recibir.");
+            }
+        }
+        else if(semantica.equals("SEMÁNTICA: TRAMA DE DATOS") || semantica.equals("SEMÁNTICA: ÚLTIMA TRAMA DE DATOS")) {
+            // verifica origen adecuado de la trama
+            if(origen.equals("Rx")) {
+                mostrarOrigenIncorrecto(origen);
+                return;
+            }
+            else if(receptor.estaRecibiendo()) {
+                String last = "";
+                if(trama.getEnq().equals("1")) {
+                    last = " finales";
+                    transmisor.inhabilitar();
+                }
+                ventana.printMessageLine("Trama "+getID()+": ("+origen+") Datos"+last+", Trama "+nextTramaID+".");
+                receptor.recibir(trama);
+                nextTramaID++;
+            }
+            else {
+                JOptionPane.showMessageDialog(null, "No se pudo enviar: trama inválido. Verifique los campos y" +
+                        " los permisos con el receptor.", "ERROR", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        else if(semantica.equals("SEMÁNTICA: TRAMA DE CONTROL")) {
+            // verifica origen adecuado de la trama
+            if(origen.equals("Tx")) {
+                mostrarOrigenIncorrecto(origen);
+                return;
+            }
+            else {
+                ventana.printMessageLine("Trama "+getID()+": ("+origen+") Control, Trama "+(nextTramaID-1)+".");
+            }
+        }
+        else if(semantica.equals("SEMÁNTICA: ÚLTIMA TRAMA DE CONTROL")) {
+            // verifica origen adecuado de la trama
+            if(origen.equals("Tx")) {
+                mostrarOrigenIncorrecto(origen);
+                return;
+            }
+            else {
+                ventana.printMessageLine("Trama "+getID()+": ("+origen+") Último control, Trama "+(nextTramaID-1)+".");
+                receptor.inhabilitar();
+            }
         }
     }
 
@@ -55,7 +147,13 @@ public class Sistema {
         ventana.repaint();
     }
 
-    private int getID() {
-        return nextID++;
+    private static int getID() {
+        return nextSecuenciaID++;
+    }
+
+    private void mostrarOrigenIncorrecto(String origen) {
+        String responsable = origen.equals("Tx")?"Transmisor":"Receptor";
+        JOptionPane.showMessageDialog(null, "Esta trama no puede ser enviada por el "+responsable,
+                "ERROR", JOptionPane.ERROR_MESSAGE);
     }
 }

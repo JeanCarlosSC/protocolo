@@ -24,6 +24,7 @@ public class Transmisor extends JPanel {
     private JTextField tfNUM;
     private JTextField tfInformacion;
     private JTextField tfIndicadorFinal;
+    private JButton btEnviar;
 
     public Transmisor(Sistema sistema) {
         this.sistema = sistema;
@@ -33,12 +34,16 @@ public class Transmisor extends JPanel {
         initTextFields();
         initCheckBoxes();
 
-        JButton btEnviar = new JButton("ENVIAR");
+        btEnviar = new JButton("ENVIAR");
         btEnviar.setBounds(794, 110, 100, 28);
         btEnviar.addActionListener(e->enviar());
         add(btEnviar);
 
         updateSemantica();
+    }
+
+    public void inhabilitar() {
+        btEnviar.setEnabled(false);
     }
 
     private void updateSemantica() {
@@ -50,11 +55,12 @@ public class Transmisor extends JPanel {
     private void enviar() {
         Trama trama = new Trama(tfIndicadorInicial.getText(), tfACK.getText(), tfENQ.getText(), tfCTR.getText(), tfDAT.getText(),
                 tfPPT.getText(), tfLPR.getText(), tfNUM.getText(), tfInformacion.getText(), tfIndicadorFinal.getText());
-        if(Sistema.validarTrama(trama)) {
+        if(Sistema.validarTrama(trama, "Tx")) {
             sistema.enviar(trama, "Tx");
         }
         else {
-            JOptionPane.showMessageDialog(null, "No se pudo enviar trama: trama inválida.", "ERROR",
+            JOptionPane.showMessageDialog(null, "No se pudo enviar trama: trama inválida. Por favor verifique" +
+                            " cada dato introducido, incluyendo el número de la trama.", "ERROR",
                     JOptionPane.ERROR_MESSAGE);
         }
     }

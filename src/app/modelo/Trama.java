@@ -70,10 +70,6 @@ public class Trama {
         this.ack = ack;
     }
 
-    public void setEnq(String enq) {
-        this.enq = enq;
-    }
-
     public void setCtr(String ctr) {
         this.ctr = ctr;
     }
@@ -88,5 +84,9 @@ public class Trama {
 
     public void setLpr(String lpr) {
         this.lpr = lpr;
+    }
+
+    public void setNum(String num) {
+        this.num = num;
     }
 }
