@@ -13,4 +13,4 @@
 
 ## Más información acerca del proyecto
 
-<p><a src="pdf/Protocolo.pdf" target="_blank">Requerimientos</a>.</p>
+[Requerimientos.](pdf/protocolo.pdf)
