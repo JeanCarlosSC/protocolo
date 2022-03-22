@@ -1,12 +1,13 @@
 package app;
 
 import app.modelo.Trama;
+import app.recursos.Resource;
 
 import javax.swing.*;
 
 public class Receptor extends JPanel {
     // referencia
-    private Sistema sistema;
+    private final Sistema sistema;
 
     // componentes
     private JLabel lSemantica;
@@ -25,7 +26,7 @@ public class Receptor extends JPanel {
     private JTextField tfHeader;
     private JTextField tfHeader1;
     private JTextField tfTrailer;
-    private JButton btResponder;
+    private final JButton btResponder;
 
     // datos
     private boolean recibiendo;
@@ -110,189 +111,189 @@ public class Receptor extends JPanel {
     private void setProperties() {
         setBounds(32, 292, 920, 352);
         setLayout(null);
-        setBorder(lib.sRAD_java.gui.component.Resource.grayBorder);
+        setBorder(Resource.grayBorder);
     }
 
     private void initLabels() {
         lSemantica = new JLabel("SEMÁNTICA: ESPERANDO UNA TRAMA");
-        lSemantica.setFont(lib.sRAD_java.gui.component.Resource.fontText);
+        lSemantica.setFont(Resource.fontText);
         lSemantica.setBounds(200, 233, 550, 30);
         add(lSemantica);
 
         JLabel lReceptor = new JLabel("RECEPTOR");
-        lReceptor.setFont(lib.sRAD_java.gui.component.Resource.fontTitleMini);
+        lReceptor.setFont(Resource.fontTitleMini);
         lReceptor.setBounds(46, 26, 100, 30);
         add(lReceptor);
 
         JLabel lTramaRecibida = new JLabel("TRAMA RECIBIDA");
-        lTramaRecibida.setFont(lib.sRAD_java.gui.component.Resource.fontText);
+        lTramaRecibida.setFont(Resource.fontText);
         lTramaRecibida.setBounds(46, 60, 100, 30);
         add(lTramaRecibida);
 
         JLabel lHeader = new JLabel("HEADER");
-        lHeader.setFont(lib.sRAD_java.gui.component.Resource.fontTextMini1);
+        lHeader.setFont(Resource.fontTextMini1);
         lHeader.setBounds(75, 86, 100, 30);
         add(lHeader);
 
         JLabel lInformacion = new JLabel("INFORMACIÓN");
-        lInformacion.setFont(lib.sRAD_java.gui.component.Resource.fontTextMini1);
+        lInformacion.setFont(Resource.fontTextMini1);
         lInformacion.setBounds(295, 86, 100, 30);
         add(lInformacion);
 
         JLabel lTrailer = new JLabel("TRAILER");
-        lTrailer.setFont(lib.sRAD_java.gui.component.Resource.fontTextMini1);
+        lTrailer.setFont(Resource.fontTextMini1);
         lTrailer.setBounds(457, 86, 100, 30);
         add(lTrailer);
 
         JLabel lRespuesta = new JLabel("RESPUESTA:");
-        lRespuesta.setFont(lib.sRAD_java.gui.component.Resource.fontText);
+        lRespuesta.setFont(Resource.fontText);
         lRespuesta.setBounds(48, 151, 150, 30);
         add(lRespuesta);
 
         JLabel lIndicador = new JLabel("INDICADOR");
-        lIndicador.setFont(lib.sRAD_java.gui.component.Resource.fontTextMini1);
+        lIndicador.setFont(Resource.fontTextMini1);
         lIndicador.setBounds(65, 181, 100, 30);
         add(lIndicador);
 
         JLabel lACK = new JLabel("ACK");
-        lACK.setFont(lib.sRAD_java.gui.component.Resource.fontTextMini1);
+        lACK.setFont(Resource.fontTextMini1);
         lACK.setBounds(153, 181, 48, 30);
         add(lACK);
 
         JLabel lENQ = new JLabel("ENQ");
-        lENQ.setFont(lib.sRAD_java.gui.component.Resource.fontTextMini1);
+        lENQ.setFont(Resource.fontTextMini1);
         lENQ.setBounds(203, 181, 50, 30);
         add(lENQ);
 
         JLabel lCTR = new JLabel("CTR");
-        lCTR.setFont(lib.sRAD_java.gui.component.Resource.fontTextMini1);
+        lCTR.setFont(Resource.fontTextMini1);
         lCTR.setBounds(254, 181, 50, 30);
         add(lCTR);
 
         JLabel lDAT = new JLabel("DAT");
-        lDAT.setFont(lib.sRAD_java.gui.component.Resource.fontTextMini1);
+        lDAT.setFont(Resource.fontTextMini1);
         lDAT.setBounds(304, 181, 50, 30);
         add(lDAT);
 
         JLabel lPPT = new JLabel("PPT");
-        lPPT.setFont(lib.sRAD_java.gui.component.Resource.fontTextMini1);
+        lPPT.setFont(Resource.fontTextMini1);
         lPPT.setBounds(354, 181, 50, 30);
         add(lPPT);
 
         JLabel lLPR = new JLabel("LPR");
-        lLPR.setFont(lib.sRAD_java.gui.component.Resource.fontTextMini1);
+        lLPR.setFont(Resource.fontTextMini1);
         lLPR.setBounds(404, 181, 50, 30);
         add(lLPR);
 
         JLabel lNUM = new JLabel("NUM");
-        lNUM.setFont(lib.sRAD_java.gui.component.Resource.fontTextMini1);
+        lNUM.setFont(Resource.fontTextMini1);
         lNUM.setBounds(452, 181, 40, 30);
         add(lNUM);
 
         JLabel lInformacion1 = new JLabel("INFORMACIÓN");
-        lInformacion1.setFont(lib.sRAD_java.gui.component.Resource.fontTextMini1);
+        lInformacion1.setFont(Resource.fontTextMini1);
         lInformacion1.setBounds(550, 181, 100, 30);
         add(lInformacion1);
 
         JLabel lIndicador1 = new JLabel("INDICADOR");
-        lIndicador1.setFont(lib.sRAD_java.gui.component.Resource.fontTextMini1);
+        lIndicador1.setFont(Resource.fontTextMini1);
         lIndicador1.setBounds(713, 181, 100, 30);
         add(lIndicador1);
 
         JLabel lMensajeRecibido = new JLabel("MENSAJE RECIBIDO:");
-        lMensajeRecibido.setFont(lib.sRAD_java.gui.component.Resource.fontText);
+        lMensajeRecibido.setFont(Resource.fontText);
         lMensajeRecibido.setBounds(48, 263, 150, 30);
         add(lMensajeRecibido);
     }
 
     private void initTextFields() {
         tfHeader = new JTextField();
-        tfHeader.setFont(lib.sRAD_java.gui.component.Resource.fontTextBold);
+        tfHeader.setFont(Resource.fontTextBold);
         tfHeader.setBounds(49, 110, 90, 28);
         tfHeader.setHorizontalAlignment(JTextField.CENTER);
         add(tfHeader);
 
         tfHeader1 = new JTextField();
-        tfHeader1.setFont(lib.sRAD_java.gui.component.Resource.fontTextBold);
+        tfHeader1.setFont(Resource.fontTextBold);
         tfHeader1.setBounds(141, 110, 90, 28);
         tfHeader1.setHorizontalAlignment(JTextField.CENTER);
         add(tfHeader1);
 
         tfInformacion = new JTextField();
-        tfInformacion.setFont(lib.sRAD_java.gui.component.Resource.fontTextBold);
+        tfInformacion.setFont(Resource.fontTextBold);
         tfInformacion.setBounds(233, 110, 200, 28);
         tfInformacion.setHorizontalAlignment(JTextField.CENTER);
         add(tfInformacion);
 
         tfTrailer = new JTextField();
-        tfTrailer.setFont(lib.sRAD_java.gui.component.Resource.fontTextBold);
+        tfTrailer.setFont(Resource.fontTextBold);
         tfTrailer.setBounds(435, 110, 90, 28);
         tfTrailer.setHorizontalAlignment(JTextField.CENTER);
         add(tfTrailer);
 
         tfIndicadorInicial = new JTextField();
-        tfIndicadorInicial.setFont(lib.sRAD_java.gui.component.Resource.fontTextBold);
+        tfIndicadorInicial.setFont(Resource.fontTextBold);
         tfIndicadorInicial.setBounds(49, 205, 90, 28);
         tfIndicadorInicial.setHorizontalAlignment(JTextField.CENTER);
         add(tfIndicadorInicial);
 
         tfACK = new JTextField();
-        tfACK.setFont(lib.sRAD_java.gui.component.Resource.fontTextBold);
+        tfACK.setFont(Resource.fontTextBold);
         tfACK.setBounds(140, 205, 48, 28);
         tfACK.setHorizontalAlignment(JTextField.CENTER);
         add(tfACK);
 
         tfENQ = new JTextField();
-        tfENQ.setFont(lib.sRAD_java.gui.component.Resource.fontTextBold);
+        tfENQ.setFont(Resource.fontTextBold);
         tfENQ.setBounds(190, 205, 48, 28);
         tfENQ.setHorizontalAlignment(JTextField.CENTER);
         add(tfENQ);
 
         tfCTR = new JTextField();
-        tfCTR.setFont(lib.sRAD_java.gui.component.Resource.fontTextBold);
+        tfCTR.setFont(Resource.fontTextBold);
         tfCTR.setBounds(240, 205, 48, 28);
         tfCTR.setHorizontalAlignment(JTextField.CENTER);
         add(tfCTR);
 
         tfDAT = new JTextField();
-        tfDAT.setFont(lib.sRAD_java.gui.component.Resource.fontTextBold);
+        tfDAT.setFont(Resource.fontTextBold);
         tfDAT.setBounds(290, 205, 48, 28);
         tfDAT.setHorizontalAlignment(JTextField.CENTER);
         add(tfDAT);
 
         tfPPT = new JTextField();
-        tfPPT.setFont(lib.sRAD_java.gui.component.Resource.fontTextBold);
+        tfPPT.setFont(Resource.fontTextBold);
         tfPPT.setBounds(340, 205, 48, 28);
         tfPPT.setHorizontalAlignment(JTextField.CENTER);
         add(tfPPT);
 
         tfLPR = new JTextField();
-        tfLPR.setFont(lib.sRAD_java.gui.component.Resource.fontTextBold);
+        tfLPR.setFont(Resource.fontTextBold);
         tfLPR.setBounds(390, 205, 48, 28);
         tfLPR.setHorizontalAlignment(JTextField.CENTER);
         add(tfLPR);
 
         tfNUM = new JTextField();
-        tfNUM.setFont(lib.sRAD_java.gui.component.Resource.fontTextBold);
+        tfNUM.setFont(Resource.fontTextBold);
         tfNUM.setBounds(440, 205, 48, 28);
         tfNUM.setHorizontalAlignment(JTextField.CENTER);
         add(tfNUM);
 
         tfInformacion1 = new JTextField();
-        tfInformacion1.setFont(lib.sRAD_java.gui.component.Resource.fontTextBold);
+        tfInformacion1.setFont(Resource.fontTextBold);
         tfInformacion1.setBounds(490, 205, 200, 28);
         tfInformacion1.setHorizontalAlignment(JTextField.CENTER);
         add(tfInformacion1);
 
         tfIndicadorFinal = new JTextField();
-        tfIndicadorFinal.setFont(lib.sRAD_java.gui.component.Resource.fontTextBold);
+        tfIndicadorFinal.setFont(Resource.fontTextBold);
         tfIndicadorFinal.setBounds(692, 205, 100, 28);
         tfIndicadorFinal.setHorizontalAlignment(JTextField.CENTER);
         add(tfIndicadorFinal);
 
         tfMensajeRecibido = new JTextField();
         tfMensajeRecibido.setBounds(200, 263, 500, 28);
-        tfMensajeRecibido.setFont(lib.sRAD_java.gui.component.Resource.fontTextBold);
+        tfMensajeRecibido.setFont(Resource.fontTextBold);
         add(tfMensajeRecibido);
     }
 

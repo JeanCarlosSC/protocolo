@@ -1,16 +1,16 @@
 package app.modelo;
 
 public class Trama {
-    private String indicadorInicial;
+    private final String indicadorInicial;
     private String ack;
-    private String enq;
+    private final String enq;
     private String ctr;
     private String dat;
     private String ppt;
     private String lpr;
     private String num;
-    private String informacion;
-    private String indicadorFinal;
+    private final String informacion;
+    private final String indicadorFinal;
 
     public Trama(String indicadorInicial, String ack, String enq, String ctr, String dat, String ppt, String lpr, String num,
                  String informacion, String indicadorFinal) {

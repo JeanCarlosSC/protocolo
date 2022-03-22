@@ -23,19 +23,19 @@ public class Sistema {
         if(configuracion.equals("0010100")) {
             return "SEMÁNTICA: TRAMA DE CONTROL, PERMISO PARA TRANSMITIR";
         }
-        else if(configuracion.substring(0, 6).equals("001001")) {
+        else if(configuracion.startsWith("001001")) {
             return  "SEMÁNTICA: TRAMA DE CONTROL, LISTO PARA RECIBIR";
         }
-        else if(configuracion.substring(0, 6).equals("000100")) {
+        else if(configuracion.startsWith("000100")) {
             return "SEMÁNTICA: TRAMA DE DATOS";
         }
-        else if(configuracion.substring(0, 6).equals("010100")) {
+        else if(configuracion.startsWith("010100")) {
             return "SEMÁNTICA: ÚLTIMA TRAMA DE DATOS";
         }
-        else if(configuracion.substring(0, 6).equals("101000")) {
+        else if(configuracion.startsWith("101000")) {
             return "SEMÁNTICA: TRAMA DE CONTROL";
         }
-        else if(configuracion.substring(0, 6).equals("111000")) {
+        else if(configuracion.startsWith("111000")) {
             return "SEMÁNTICA: ÚLTIMA TRAMA DE CONTROL";
         }
         else {
@@ -69,74 +69,71 @@ public class Sistema {
         // enviar
         String semantica = obtenerSemantica(trama);
 
-        if(semantica.equals("SEMÁNTICA: TRAMA DE CONTROL, PERMISO PARA TRANSMITIR")) {
-            // verifica origen adecuado de la trama
-            if(origen.equals("Rx")) {
-                mostrarOrigenIncorrecto(origen);
-                return;
-            }
-            else {
-                ventana.printMessageLine("Trama "+getID()+": ("+origen+") Control, permiso para transmitir.");
-                receptor.recibir(trama);
-                nextTramaID++;
-            }
-        }
-        else if(semantica.equals("SEMÁNTICA: TRAMA DE CONTROL, LISTO PARA RECIBIR")) {
-            // verifica origen adecuado de la trama
-            if(origen.equals("Tx")) {
-                mostrarOrigenIncorrecto(origen);
-                return;
-            }
-            else {
-                ventana.printMessageLine("Trama "+getID()+": ("+origen+") Control, listo para recibir.");
-            }
-        }
-        else if(semantica.equals("SEMÁNTICA: TRAMA DE DATOS") || semantica.equals("SEMÁNTICA: ÚLTIMA TRAMA DE DATOS")) {
-            // verifica origen adecuado de la trama
-            if(origen.equals("Rx")) {
-                mostrarOrigenIncorrecto(origen);
-                return;
-            }
-            else if(receptor.estaRecibiendo()) {
-                String last = "";
-                if(trama.getEnq().equals("1")) {
-                    last = " finales";
-                    transmisor.inhabilitar();
+        switch (semantica) {
+            case "SEMÁNTICA: TRAMA DE CONTROL, PERMISO PARA TRANSMITIR":
+                // verifica origen adecuado de la trama
+                if (origen.equals("Rx")) {
+                    mostrarOrigenIncorrecto(origen);
+                    return;
+                } else {
+                    ventana.printMessageLine("Trama " + getID() + ": (" + origen + ") Control, permiso para transmitir.");
+                    receptor.recibir(trama);
+                    nextTramaID++;
                 }
-                ventana.printMessageLine("Trama "+getID()+": ("+origen+") Datos"+last+", Trama "+nextTramaID+".");
-                receptor.recibir(trama);
-                nextTramaID++;
-            }
-            else {
-                JOptionPane.showMessageDialog(null, "No se pudo enviar: trama inválido. Verifique los campos y" +
-                        " los permisos con el receptor.", "ERROR", JOptionPane.ERROR_MESSAGE);
-            }
-        }
-        else if(semantica.equals("SEMÁNTICA: TRAMA DE CONTROL")) {
-            // verifica origen adecuado de la trama
-            if(origen.equals("Tx")) {
-                mostrarOrigenIncorrecto(origen);
-                return;
-            }
-            else {
-                ventana.printMessageLine("Trama "+getID()+": ("+origen+") Control, Trama "+(nextTramaID-1)+".");
-            }
-        }
-        else if(semantica.equals("SEMÁNTICA: ÚLTIMA TRAMA DE CONTROL")) {
-            // verifica origen adecuado de la trama
-            if(origen.equals("Tx")) {
-                mostrarOrigenIncorrecto(origen);
-                return;
-            }
-            else {
-                ventana.printMessageLine("Trama "+getID()+": ("+origen+") Último control, Trama "+(nextTramaID-1)+".");
-                receptor.inhabilitar();
-            }
+                break;
+            case "SEMÁNTICA: TRAMA DE CONTROL, LISTO PARA RECIBIR":
+                // verifica origen adecuado de la trama
+                if (origen.equals("Tx")) {
+                    mostrarOrigenIncorrecto(origen);
+                    return;
+                } else {
+                    ventana.printMessageLine("Trama " + getID() + ": (" + origen + ") Control, listo para recibir.");
+                }
+                break;
+            case "SEMÁNTICA: TRAMA DE DATOS":
+            case "SEMÁNTICA: ÚLTIMA TRAMA DE DATOS":
+                // verifica origen adecuado de la trama
+                if (origen.equals("Rx")) {
+                    mostrarOrigenIncorrecto(origen);
+                    return;
+                } else if (receptor.estaRecibiendo()) {
+                    String last = "";
+                    if (trama.getEnq().equals("1")) {
+                        last = " finales";
+                        transmisor.inhabilitar();
+                    }
+                    ventana.printMessageLine("Trama " + getID() + ": (" + origen + ") Datos" + last + ", Trama " + nextTramaID + ".");
+                    receptor.recibir(trama);
+                    nextTramaID++;
+                } else {
+                    JOptionPane.showMessageDialog(null, "No se pudo enviar: trama inválido. Verifique los campos y" +
+                            " los permisos con el receptor.", "ERROR", JOptionPane.ERROR_MESSAGE);
+                }
+                break;
+            case "SEMÁNTICA: TRAMA DE CONTROL":
+                // verifica origen adecuado de la trama
+                if (origen.equals("Tx")) {
+                    mostrarOrigenIncorrecto(origen);
+                    return;
+                } else {
+                    ventana.printMessageLine("Trama " + getID() + ": (" + origen + ") Control, Trama " + (nextTramaID - 1) + ".");
+                }
+                break;
+            case "SEMÁNTICA: ÚLTIMA TRAMA DE CONTROL":
+                // verifica origen adecuado de la trama
+                if (origen.equals("Tx")) {
+                    mostrarOrigenIncorrecto(origen);
+                    return;
+                } else {
+                    ventana.printMessageLine("Trama " + getID() + ": (" + origen + ") Último control, Trama " + (nextTramaID - 1) + ".");
+                    receptor.inhabilitar();
+                }
+                break;
         }
     }
 
     private void initComponents() {
-        ventana = new Ventana(this);
+        ventana = new Ventana();
 
         transmisor = new Transmisor(this);
         ventana.add(transmisor);

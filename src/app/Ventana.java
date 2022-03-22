@@ -1,23 +1,16 @@
 package app;
 
-import lib.sRAD_java.gui.component.Resource;
+import app.recursos.Resource;
 
 import javax.swing.*;
-import java.awt.*;
+
+import static app.recursos.Resource.bgColor;
 
 public class Ventana extends JFrame {
-    // referencia
-    private Sistema sistema;
-
-    // color
-    private final Color bgColor = new Color(248, 248, 248);
-
     // componentes
     private JTextArea taSecuenciaDeTramas; // secuencia de tramas
 
-    public Ventana(Sistema sistema) {
-        this.sistema = sistema;
-
+    public Ventana() {
         initComponents();
         setProperties();
     }
