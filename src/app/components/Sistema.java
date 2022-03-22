@@ -69,7 +69,7 @@ public class Sistema {
 
     public void enviar(Trama trama, String origen) {
         // inicializa los frames si aún no se han inicializado
-        if(frames == null) {
+        if(frames == null && !transmisor.getMensajeATransmitir().equals("")) {
             frames = new ArrayList<>();
             int size = transmisor.getMensajeATransmitir().length()/transmisor.getNoFrames();
             int module = transmisor.getMensajeATransmitir().length()%transmisor.getNoFrames();
@@ -178,6 +178,9 @@ public class Sistema {
     }
 
     public int getLastPosicion() {
+        if(frames == null) {
+            return -1;
+        }
         return frames.size()-1;
     }
 

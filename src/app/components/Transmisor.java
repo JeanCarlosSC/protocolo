@@ -316,8 +316,10 @@ public class Transmisor extends JPanel {
         }
 
         // cualquier trama
-        tfNUM.setText(posicion+"");
-        tfInformacion.setText(sistema.getFrameAt(posicion-1));
+        if(posicion-1 <= sistema.getLastPosicion()) {
+            tfNUM.setText(posicion+"");
+            tfInformacion.setText(sistema.getFrameAt(posicion-1));
+        }
 
     }
 }
